@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useRef, useState } from "react";
 
 type Product = {
   name: string; variety: string; origin: string; weight: string; price: string;
@@ -28,6 +28,7 @@ export default function Home() {
   const [tab, setTab] = useState<"edit" | "preview">("edit");
   const [images, setImages] = useState<string[]>(["/samples/apple-main.png", "/samples/apple-cut.png"]);
   const [notice, setNotice] = useState("");
+  const detailPageRef = useRef<HTMLDivElement>(null);
 
   const copy = useMemo(() => ({
     title: `[산지직송] ${product.origin} ${product.variety} ${product.weight} ${product.shipping}`,
@@ -55,6 +56,49 @@ export default function Home() {
     const url = URL.createObjectURL(new Blob([data], { type: "application/json" }));
     const a = document.createElement("a"); a.href = url; a.download = "스마트스토어_상품등록_초안.json"; a.click();
     URL.revokeObjectURL(url); setNotice("등록용 초안을 저장했습니다.");
+  }
+
+  async function downloadPng() {
+    if (!detailPageRef.current) return;
+    setNotice("상세페이지 이미지를 만드는 중입니다…");
+    try {
+      const { toPng } = await import("html-to-image");
+      const dataUrl = await toPng(detailPageRef.current, {
+        pixelRatio: 2, backgroundColor: "#ffffff", cacheBust: true,
+        width: 390, style: { width: "390px", maxWidth: "390px" },
+      });
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `${product.name.replace(/[\\/:*?\"<>|]/g, "_")}_상세페이지.png`;
+      a.click();
+      setNotice("상세페이지 PNG를 저장했습니다.");
+    } catch {
+      setNotice("이미지 저장에 실패했습니다. 사진을 다시 선택한 후 시도해 주세요.");
+    }
+  }
+
+  async function downloadExcel() {
+    const XLSX = await import("xlsx");
+    const priceNumber = Number(product.price.replace(/[^0-9.-]/g, "")) || 0;
+    const stockNumber = Number(product.stock.replace(/[^0-9.-]/g, "")) || 0;
+    const rows = [
+      ["스마트스토어 상품등록 초안", ""], ["항목", "등록 내용"],
+      ["추천 상품명", copy.title], ["상품 기본명", product.name], ["품종", product.variety],
+      ["원산지", product.origin], ["생산자·판매자", product.producer], ["중량·구성", product.weight],
+      ["판매가", priceNumber], ["재고", stockNumber], ["배송 조건", product.shipping],
+      ["보관 방법", product.storage], ["상품 특징", product.feature], ["상세 소개", copy.summary],
+      ["핵심 포인트 1", copy.points[0]], ["핵심 포인트 2", copy.points[1]], ["핵심 포인트 3", copy.points[2]],
+      ["사진 수", images.length], ["작성 상태", "등록 전 사실정보 확인 필요"],
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws["!cols"] = [{ wch: 20 }, { wch: 65 }];
+    ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 1 } }];
+    if (ws.B9) ws.B9.z = "#,##0";
+    if (ws.B10) ws.B10.z = "#,##0";
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "상품등록정보");
+    XLSX.writeFile(wb, `${product.name.replace(/[\\/:*?\"<>|]/g, "_")}_상품등록.xlsx`);
+    setNotice("스마트스토어 등록정보 엑셀을 저장했습니다.");
   }
 
   return (
@@ -91,7 +135,7 @@ export default function Home() {
         <aside className={`previewPane ${tab === "preview" ? "show" : ""}`}>
           <div className="previewHead"><div><span className="dot" /> 상세페이지 미리보기</div><div><button onClick={() => window.print()}>인쇄</button><button onClick={download}>초안 저장</button></div></div>
           <div className="phone">
-            <div className="mockPage">
+            <div className="mockPage" ref={detailPageRef}>
               <div className="cover" style={{backgroundImage: `linear-gradient(0deg,rgba(23,33,23,.72),rgba(23,33,23,.04)),url("${images[0] || "/samples/apple-main.png"}")`}}>
                 <span>{product.origin} 산지직송</span><h2>{copy.headline}</h2><p>{product.variety} · {product.weight}</p>
               </div>
@@ -102,7 +146,8 @@ export default function Home() {
             </div>
           </div>
           <div className="resultCard"><span>AI 추천 상품명</span><p>{generated ? copy.title : "정보가 변경되었습니다. AI 제작 버튼을 눌러 갱신하세요."}</p><button onClick={() => navigator.clipboard?.writeText(copy.title)}>복사</button></div>
-          <div className="actions"><button className="secondary" onClick={download}>초안 저장</button><button className="primary" onClick={() => setNotice("API 연결 전입니다. 현재는 초안을 저장한 뒤 스마트스토어에서 확인해 주세요.")}>스마트스토어 등록 준비 →</button></div>
+          <div className="downloadActions"><button className="secondary" onClick={downloadPng}><b>PNG</b><span>상세페이지 저장</span></button><button className="secondary" onClick={downloadExcel}><b>XLSX</b><span>등록정보 엑셀</span></button></div>
+          <div className="actions"><button className="secondary" onClick={download}>JSON 백업</button><button className="primary" onClick={() => setNotice("API 연결 전입니다. PNG와 엑셀을 내려받아 스마트스토어에서 확인해 주세요.")}>스마트스토어 등록 준비 →</button></div>
         </aside>
       </section>
       {notice && <div className="toast" role="status">{notice}<button onClick={() => setNotice("")}>×</button></div>}
