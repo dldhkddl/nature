@@ -36,7 +36,7 @@
 .utility,
 .headerMain,
 .categoryNav,
-.quickLinks {
+.heroAccountPanel {
   width: min(1280px, calc(100% - 48px));
   margin-inline: auto;
 }
@@ -50,22 +50,21 @@
   font-size: 12px;
 }
 
-.utility nav,
-.accountLinks {
+.utility nav {
   display: flex;
   gap: 18px;
 }
 
 .headerMain {
-  min-height: 96px;
+  min-height: 112px;
   display: grid;
-  grid-template-columns: 260px minmax(280px, 1fr) 220px;
+  grid-template-columns: 240px minmax(320px, 1fr) 340px;
   align-items: center;
-  gap: 32px;
+  gap: 36px;
 }
 
 .logo img {
-  width: 250px;
+  width: 240px;
   height: auto;
 }
 
@@ -93,8 +92,28 @@
 }
 
 .accountLinks {
-  justify-content: flex-end;
-  font-size: 13px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.accountLinks a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  color: #3f473f;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.accountLinks svg {
+  width: 27px;
+  height: 27px;
+  color: var(--nature-green);
 }
 
 .categoryNav {
@@ -104,39 +123,112 @@
   justify-content: center;
   gap: 56px;
   font-weight: 700;
+  border-top: 1px solid #f1ede8;
 }
 
-.hero picture,
-.hero img {
-  width: 100%;
-}
-
-.quickLinks {
+.heroAccountPanel {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  margin-block: 28px 72px;
-  background: #fff;
-  border: 1px solid var(--nature-beige);
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: stretch;
+  margin-top: 50px;
+  margin-bottom: 16px;
 }
 
-.quickLinks a {
-  padding: 22px;
-  border-right: 1px solid var(--nature-beige);
+.heroArea {
+  min-width: 0;
+  min-height: 320px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--nature-cream);
 }
 
-.quickLinks a:last-child {
-  border-right: 0;
-}
-
-.quickLinks strong,
-.quickLinks span {
+.heroArea picture {
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.quickLinks span {
-  margin-top: 5px;
-  color: #7e756b;
+.heroArea img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.memberRail {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 18px;
+}
+
+.loginCard {
+  padding: 24px 22px 22px;
+  border-radius: 20px;
+  background: var(--nature-green);
+  color: #fff;
+}
+
+.loginCard > span {
+  color: #d9e7dd;
   font-size: 12px;
+  font-weight: 600;
+}
+
+.loginCard h2 {
+  margin: 7px 0 18px;
+  font-size: 19px;
+  line-height: 1.42;
+  letter-spacing: -0.04em;
+}
+
+.loginCard a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--nature-green);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.memberShortcuts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: stretch;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid #eee7de;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.memberShortcuts a {
+  display: flex;
+  min-width: 0;
+  min-height: 70px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 7px;
+  border-radius: 12px;
+  color: #4d554e;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.memberShortcuts a:hover {
+  background: var(--nature-cream);
+  color: var(--nature-green);
+}
+
+.memberShortcuts svg {
+  width: 26px;
+  height: 26px;
+  color: var(--nature-green);
 }
 
 .productSection,
@@ -454,6 +546,26 @@
 }
 
 @media (max-width: 960px) {
+  .headerMain {
+    grid-template-columns: 210px minmax(280px, 1fr);
+  }
+
+  .accountLinks {
+    grid-column: 1 / -1;
+    width: min(420px, 100%);
+    justify-self: end;
+    padding-bottom: 18px;
+  }
+
+  .heroAccountPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .memberRail {
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+    grid-template-rows: 1fr;
+  }
+
   .productGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -496,17 +608,38 @@
   }
 
   .accountLinks {
-    display: none;
+    grid-column: auto;
+    width: 100%;
+    justify-self: stretch;
+    padding-bottom: 0;
   }
 
   .categoryNav {
     overflow-x: auto;
+    justify-content: flex-start;
   }
 
-  .quickLinks,
   .productGrid,
   .compactGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .heroAccountPanel {
+    width: min(100% - 32px, 1280px);
+    margin-top: 24px;
+  }
+
+  .heroArea {
+    min-height: 0;
+  }
+
+  .heroArea img {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .memberRail {
+    grid-template-columns: 1fr;
   }
 
   .exhibition {

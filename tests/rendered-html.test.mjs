@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 async function render(pathname) {
@@ -36,22 +35,15 @@ test("server-renders the Pureubon homepage preview", async () => {
   assert.match(html, /배송 · 교환 · 반품 안내/);
 });
 
-test("keeps the Cafe24 replacement slots in the preview source", async () => {
-  const [page, header] = await Promise.all([
-    readFile(
-      new URL("../app/pureubon-preview/page.tsx", import.meta.url),
-      "utf8",
-    ),
-    readFile(
-      new URL(
-        "../app/pureubon-preview/_components/SiteHeader.tsx",
-        import.meta.url,
-      ),
-      "utf8",
-    ),
-  ]);
+test("server-renders the Cafe24 replacement slots", async () => {
+  const response = await render("/pureubon-preview");
+  assert.equal(response.status, 200);
+  const html = await response.text();
 
   for (const slot of [
+    "header",
+    "category",
+    "hero-account-panel",
     "hero",
     "quick-links",
     "featured-products",
@@ -62,9 +54,6 @@ test("keeps the Cafe24 replacement slots in the preview source", async () => {
     "trust-guide",
     "footer",
   ]) {
-    assert.match(page, new RegExp(`data-cafe24-slot=["']${slot}["']`));
+    assert.match(html, new RegExp(`data-cafe24-slot=["']${slot}["']`));
   }
-
-  assert.match(header, /data-cafe24-slot=["']header["']/);
-  assert.match(header, /data-cafe24-slot=["']category["']/);
 });
