@@ -38,6 +38,16 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="hero"/);
   assert.match(html, /\/nature-seomgim\/hero-pc\.png/);
   assert.doesNotMatch(html, /수산물|축산물|가공식품/);
+  assert.match(html, /지금 많이 찾는 상품/);
+  assert.match(html, /산지에서 바로, 이번 주 특별가/);
+  assert.match(html, /농산물 상품군별 인기상품/);
+  assert.match(html, /자연섬김 기획전/);
+  assert.match(html, /회원 전용 가격/);
+  assert.match(html, /data-cafe24-slot="featured-products"/);
+  assert.match(html, /data-cafe24-slot="season-deals"/);
+  assert.match(html, /data-cafe24-slot="farm-groups"/);
+  assert.match(html, /data-cafe24-slot="exhibitions"/);
+  assert.equal((html.match(/data-preview-product=/g) ?? []).length, 21);
 });
 
 export { renderPreview };

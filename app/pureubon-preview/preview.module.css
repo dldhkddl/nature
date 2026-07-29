@@ -138,3 +138,164 @@
   color: #7e756b;
   font-size: 12px;
 }
+
+.productSection,
+.farmGroups {
+  padding: 88px max(24px, calc((100% - 1280px) / 2));
+}
+
+.beigeSection {
+  background: var(--nature-cream);
+}
+
+.sectionHeading {
+  max-width: 620px;
+  margin-bottom: 34px;
+}
+
+.sectionHeading > span {
+  color: var(--nature-brown);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.sectionHeading h2 {
+  margin: 10px 0 8px;
+  color: var(--nature-green);
+  font-size: clamp(28px, 3vw, 42px);
+  letter-spacing: -0.04em;
+}
+
+.sectionHeading p {
+  margin: 0;
+  color: #786f65;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 20px;
+}
+
+.productCard {
+  min-width: 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #ece4d9;
+  border-radius: 18px 18px 10px 10px;
+}
+
+.productImage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 0.86;
+  background: var(--nature-beige);
+}
+
+.productImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.productCard:hover .productImage img {
+  transform: scale(1.025);
+}
+
+.productImage span {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 9px;
+  background: var(--nature-green);
+  color: #fff;
+  font-size: 11px;
+  border-radius: 999px;
+}
+
+.productBody {
+  padding: 18px;
+}
+
+.productBody h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.productBody p {
+  min-height: 39px;
+  margin: 7px 0 16px;
+  color: #7b736b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.productBody strong {
+  color: var(--nature-green);
+  font-size: 14px;
+}
+
+.farmGroups {
+  background: #fff;
+}
+
+.farmGroup {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  padding: 34px 0;
+  border-top: 1px solid var(--nature-beige);
+}
+
+.farmGroup > div:first-child h3 {
+  margin: 0 0 8px;
+  color: var(--nature-green);
+  font-size: 24px;
+}
+
+.farmGroup > div:first-child p {
+  margin: 0;
+  color: #786f65;
+  line-height: 1.65;
+}
+
+.compactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.exhibition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 62px max(24px, calc((100% - 1280px) / 2));
+  background: var(--nature-green);
+  color: #fff;
+}
+
+.exhibition span {
+  color: #d8c7ad;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.exhibition h2 {
+  margin: 10px 0 7px;
+  font-size: 36px;
+}
+
+.exhibition p {
+  margin: 0;
+  color: #dce5dd;
+}
+
+.exhibition a {
+  flex: none;
+  padding: 14px 22px;
+  border: 1px solid #fff;
+}
