@@ -171,3 +171,22 @@ export const farmGroups = [
     products: featuredProducts.slice(5, 8),
   },
 ] as const;
+
+export const trustItems = [
+  {
+    title: "산지 직송",
+    description: "산지에서 선별한 농산물을 바로 보냅니다.",
+  },
+  {
+    title: "꼼꼼한 선별",
+    description: "상품 상태와 품질을 세심하게 확인합니다.",
+  },
+  {
+    title: "안전한 포장",
+    description: "배송 중 손상을 줄이도록 정성껏 포장합니다.",
+  },
+  {
+    title: "신속한 배송",
+    description: "신선함을 지킬 수 있도록 빠르게 출고합니다.",
+  },
+] as const;

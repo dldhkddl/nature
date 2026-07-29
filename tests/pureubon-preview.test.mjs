@@ -48,6 +48,16 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="farm-groups"/);
   assert.match(html, /data-cafe24-slot="exhibitions"/);
   assert.equal((html.match(/data-preview-product=/g) ?? []).length, 21);
+  assert.match(html, /자연섬김 이야기/);
+  assert.match(html, /산지 직송/);
+  assert.match(html, /꼼꼼한 선별/);
+  assert.match(html, /안전한 포장/);
+  assert.match(html, /신속한 배송/);
+  assert.match(html, /고객센터/);
+  assert.match(html, /배송 · 교환 · 반품 안내/);
+  assert.match(html, /data-cafe24-slot="brand-story"/);
+  assert.match(html, /data-cafe24-slot="trust-guide"/);
+  assert.match(html, /data-cafe24-slot="footer"/);
 });
 
 export { renderPreview };

@@ -6,6 +6,7 @@ import {
   farmGroups,
   featuredProducts,
   quickLinks,
+  trustItems,
 } from "./content";
 import styles from "./preview.module.css";
 
@@ -108,7 +109,86 @@ export default function PureubonPreviewPage() {
           </div>
           <a href="#season-deals">기획상품 보러가기</a>
         </section>
+
+        <section
+          className={styles.brandStory}
+          data-cafe24-slot="brand-story"
+        >
+          <div className={styles.brandStoryCopy}>
+            <span className={styles.eyebrow}>자연을 닮은 정직한 먹거리</span>
+            <h2>자연섬김 이야기</h2>
+            <p>
+              좋은 농산물은 좋은 산지에서 시작됩니다. 자연섬김은 생산자의
+              정성과 제철의 신선함이 식탁까지 온전히 이어지도록 산지와
+              고객을 정직하게 연결합니다.
+            </p>
+            <a className={styles.storyLink} href="#customer-center">
+              자연섬김 더 알아보기
+            </a>
+          </div>
+          <div className={styles.brandStoryVisual}>
+            <img
+              src="/nature-seomgim/hero-mobile.png"
+              alt="자연섬김의 자연과 농산물"
+            />
+          </div>
+        </section>
+
+        <section
+          id="shipping-guide"
+          className={styles.trustGuide}
+          data-cafe24-slot="trust-guide"
+        >
+          <img
+            className={styles.trustTitleImage}
+            src="/nature-seomgim/trust-title.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <span className={styles.eyebrow}>신선함을 지키는 네 가지 원칙</span>
+          <h2>자연섬김이 약속합니다</h2>
+          <div className={styles.trustGrid}>
+            {trustItems.map((item) => (
+              <article className={styles.trustCard} key={item.title}>
+                <img
+                  src="/nature-seomgim/trust-icon.png"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
       </main>
+
+      <footer
+        id="customer-center"
+        className={styles.footer}
+        data-cafe24-slot="footer"
+      >
+        <div className={styles.footerBrand}>
+          <strong>자연섬김</strong>
+          <p>산지의 신선함을 정직하게 전하는 농산물 전문몰</p>
+        </div>
+        <div>
+          <h2>고객센터</h2>
+          <strong className={styles.phone}>상담번호 준비 중</strong>
+          <p>평일 09:00–18:00 · 주말 및 공휴일 휴무</p>
+        </div>
+        <div>
+          <h2>배송 · 교환 · 반품 안내</h2>
+          <p>
+            신선식품 특성상 상품별 배송 일정이 다를 수 있습니다. 교환 및
+            반품은 고객센터를 통해 먼저 접수해 주세요.
+          </p>
+        </div>
+        <div className={styles.footerMeta}>
+          <p>이용약관 · 개인정보처리방침 · 사업자정보확인</p>
+          <p>© 자연섬김. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
