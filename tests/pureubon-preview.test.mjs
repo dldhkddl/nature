@@ -7,8 +7,8 @@ const originalHeroUrl = new URL(
   "../public/nature-seomgim/hero-pc.png",
   import.meta.url,
 );
-const peachHeroUrl = new URL(
-  "../public/nature-seomgim/hero-peach-pc.png",
+const giftBoxHeroUrl = new URL(
+  "../public/nature-seomgim/hero-gift-box-pc.png",
   import.meta.url,
 );
 
@@ -143,7 +143,8 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="hero-account-panel"/);
   assert.match(html, /자연섬김과 함께 신선한 장보기를 시작하세요/);
   assert.equal((html.match(/data-member-shortcut=/g) ?? []).length, 6);
-  assert.match(html, /\/nature-seomgim\/hero-peach-pc\.png/);
+  assert.match(html, /\/nature-seomgim\/hero-gift-box-pc\.png/);
+  assert.doesNotMatch(html, /\/nature-seomgim\/hero-peach-pc\.png/);
   assert.doesNotMatch(html, /\/nature-seomgim\/hero-pc\.png/);
   assert.doesNotMatch(html, /수산물|축산물|가공식품/);
   assert.match(html, /지금 많이 찾는 상품/);
@@ -168,30 +169,30 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="footer"/);
 });
 
-test("keeps the peach hero copy and surrounding artwork unchanged", async () => {
-  const [original, peach] = await Promise.all([
+test("keeps the gift-box hero dimensions and copy artwork unchanged", async () => {
+  const [original, giftBox] = await Promise.all([
     decodePng(originalHeroUrl),
-    decodePng(peachHeroUrl),
+    decodePng(giftBoxHeroUrl),
   ]);
 
-  assert.deepEqual([peach.width, peach.height], [original.width, original.height]);
-  assert.equal(peach.channels, original.channels);
+  assert.deepEqual(
+    [giftBox.width, giftBox.height],
+    [original.width, original.height],
+  );
+  assert.equal(giftBox.channels, original.channels);
 
-  const unchangedRegions = [
-    { left: 0, top: 0, width: 700, height: 400 },
-    { left: 1400, top: 0, width: 520, height: 400 },
-  ];
+  const unchangedRegions = [{ left: 0, top: 0, width: 700, height: 400 }];
 
   for (const region of unchangedRegions) {
     const originalPixels = cropPixels(original, region);
-    const peachPixels = cropPixels(peach, region);
-    assert.deepEqual(peachPixels, originalPixels);
+    const giftBoxPixels = cropPixels(giftBox, region);
+    assert.deepEqual(giftBoxPixels, originalPixels);
   }
 
   const fruitRegion = { left: 760, top: 60, width: 600, height: 340 };
   const originalFruitPixels = cropPixels(original, fruitRegion);
-  const peachFruitPixels = cropPixels(peach, fruitRegion);
-  assert.notDeepEqual(peachFruitPixels, originalFruitPixels);
+  const giftBoxFruitPixels = cropPixels(giftBox, fruitRegion);
+  assert.notDeepEqual(giftBoxFruitPixels, originalFruitPixels);
 });
 
 export { renderPreview };

@@ -38,7 +38,7 @@ test("uses the approved nature-seomgim palette and responsive grids", async () =
   );
   assert.match(
     css,
-    /\.heroArea img\s*\{[^}]*object-position:\s*-64px center/i,
+    /\.heroArea img\s*\{[^}]*object-position:\s*-100px -20px/i,
   );
   assert.match(
     css,
