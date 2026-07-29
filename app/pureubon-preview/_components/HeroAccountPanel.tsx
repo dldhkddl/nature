@@ -94,7 +94,7 @@ export function HeroAccountPanel() {
             srcSet="/nature-seomgim/hero-mobile.png"
           />
           <img
-            src="/nature-seomgim/hero-pc.png"
+            src="/nature-seomgim/hero-peach-pc.png"
             alt="오늘의 제철 과일, 산지에서 가장 맛있는 순간"
           />
         </picture>

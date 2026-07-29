@@ -36,4 +36,12 @@ test("uses the approved nature-seomgim palette and responsive grids", async () =
     css,
     /@media\s*\(max-width:\s*960px\)[\s\S]*?\.heroAccountPanel\s*\{[\s\S]*?grid-template-columns:\s*1fr/i,
   );
+  assert.match(
+    css,
+    /\.heroArea img\s*\{[^}]*object-position:\s*-64px center/i,
+  );
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*640px\)[\s\S]*?\.heroArea img\s*\{[^}]*object-position:\s*center/i,
+  );
 });
