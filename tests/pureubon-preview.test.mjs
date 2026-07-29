@@ -41,6 +41,9 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /선물세트/);
   assert.match(html, /기획전/);
   assert.match(html, /data-cafe24-slot="hero"/);
+  assert.match(html, /data-cafe24-slot="hero-account-panel"/);
+  assert.match(html, /자연섬김과 함께 신선한 장보기를 시작하세요/);
+  assert.equal((html.match(/data-member-shortcut=/g) ?? []).length, 6);
   assert.match(html, /\/nature-seomgim\/hero-pc\.png/);
   assert.doesNotMatch(html, /수산물|축산물|가공식품/);
   assert.match(html, /지금 많이 찾는 상품/);
