@@ -29,7 +29,12 @@ test("renders the nature-seomgim preview shell", async () => {
   const html = await response.text();
   assert.match(html, /<title>자연섬김 푸르본 \| 산지직송 농산물<\/title>/);
   assert.match(html, /오늘도자연섬김/);
+  assert.match(html, /\/nature-seomgim\/logo-transparent\.png/);
   assert.match(html, /상품을 검색해 보세요/);
+  assert.match(html, /전체상품/);
+  assert.match(html, /마이페이지/);
+  assert.match(html, /장바구니/);
+  assert.match(html, /고객센터/);
   assert.match(html, /전체상품/);
   assert.match(html, /농산물/);
   assert.match(html, /제철상품/);

@@ -1,6 +1,55 @@
 import { navItems } from "../content";
 import styles from "../preview.module.css";
 
+type HeaderIconName = "products" | "mypage" | "cart" | "support";
+
+function HeaderIcon({ name }: { name: HeaderIconName }) {
+  const paths: Record<HeaderIconName, React.ReactNode> = {
+    products: (
+      <>
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </>
+    ),
+    mypage: (
+      <>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4.5 21c.7-4.5 3.2-6.7 7.5-6.7s6.8 2.2 7.5 6.7" />
+      </>
+    ),
+    cart: (
+      <>
+        <path d="M3 4h2l2.2 10.2h10.9L21 7H7" />
+        <circle cx="9" cy="19" r="1.5" />
+        <circle cx="18" cy="19" r="1.5" />
+      </>
+    ),
+    support: (
+      <>
+        <path d="M4 13v-2a8 8 0 0 1 16 0v2" />
+        <path d="M4 13v5h3v-6H5a1 1 0 0 0-1 1ZM20 13v5h-3v-6h2a1 1 0 0 1 1 1Z" />
+        <path d="M17 18c0 2-1.7 3-5 3" />
+      </>
+    ),
+  };
+
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {paths[name]}
+    </svg>
+  );
+}
+
 export function SiteHeader() {
   return (
     <header className={styles.siteHeader} data-cafe24-slot="header">
@@ -9,14 +58,15 @@ export function SiteHeader() {
         <nav aria-label="회원 메뉴">
           <a href="#signup">회원가입</a>
           <a href="#login">로그인</a>
-          <a href="#orders">주문조회</a>
-          <a href="#customer-center">고객센터</a>
         </nav>
       </div>
 
       <div className={styles.headerMain}>
         <a className={styles.logo} href="#top" aria-label="오늘도자연섬김 홈">
-          <img src="/nature-seomgim/logo.png" alt="오늘도자연섬김" />
+          <img
+            src="/nature-seomgim/logo-transparent.png"
+            alt="오늘도자연섬김"
+          />
         </a>
 
         <form className={styles.search} role="search" action="#all-products">
@@ -32,8 +82,22 @@ export function SiteHeader() {
         </form>
 
         <div className={styles.accountLinks}>
-          <a href="#mypage">마이페이지</a>
-          <a href="#cart">장바구니</a>
+          <a href="#all-products">
+            <HeaderIcon name="products" />
+            <span>전체상품</span>
+          </a>
+          <a href="#mypage">
+            <HeaderIcon name="mypage" />
+            <span>마이페이지</span>
+          </a>
+          <a href="#cart">
+            <HeaderIcon name="cart" />
+            <span>장바구니</span>
+          </a>
+          <a href="#customer-center">
+            <HeaderIcon name="support" />
+            <span>고객센터</span>
+          </a>
         </div>
       </div>
 
