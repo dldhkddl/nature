@@ -1,0 +1,140 @@
+.preview {
+  --nature-cream: #f2e7dd;
+  --nature-beige: #ebe0d4;
+  --nature-green: #234837;
+  --nature-brown: #ab8f70;
+  --nature-ink: #2b332c;
+  --nature-white: #ffffff;
+  min-height: 100vh;
+  background: #fbf8f3;
+  color: var(--nature-ink);
+}
+
+.preview a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.preview img {
+  display: block;
+  max-width: 100%;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.siteHeader {
+  background: var(--nature-white);
+  border-bottom: 1px solid var(--nature-beige);
+}
+
+.utility,
+.headerMain,
+.categoryNav,
+.quickLinks {
+  width: min(1280px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.utility {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #6d675f;
+  font-size: 12px;
+}
+
+.utility nav,
+.accountLinks {
+  display: flex;
+  gap: 18px;
+}
+
+.headerMain {
+  min-height: 96px;
+  display: grid;
+  grid-template-columns: 260px minmax(280px, 1fr) 220px;
+  align-items: center;
+  gap: 32px;
+}
+
+.logo img {
+  width: 250px;
+  height: auto;
+}
+
+.search {
+  display: flex;
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid var(--nature-green);
+  border-radius: 999px;
+}
+
+.search input {
+  min-width: 0;
+  flex: 1;
+  padding: 13px 18px;
+  border: 0;
+  outline: 0;
+}
+
+.search button {
+  padding: 0 22px;
+  background: var(--nature-green);
+  color: #fff;
+  border: 0;
+}
+
+.accountLinks {
+  justify-content: flex-end;
+  font-size: 13px;
+}
+
+.categoryNav {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  font-weight: 700;
+}
+
+.hero picture,
+.hero img {
+  width: 100%;
+}
+
+.quickLinks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-block: 28px 72px;
+  background: #fff;
+  border: 1px solid var(--nature-beige);
+}
+
+.quickLinks a {
+  padding: 22px;
+  border-right: 1px solid var(--nature-beige);
+}
+
+.quickLinks a:last-child {
+  border-right: 0;
+}
+
+.quickLinks strong,
+.quickLinks span {
+  display: block;
+}
+
+.quickLinks span {
+  margin-top: 5px;
+  color: #7e756b;
+  font-size: 12px;
+}
