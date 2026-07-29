@@ -1,0 +1,27 @@
+{
+  "_comment": "농장 엑셀은 형식이 조금씩 바뀔 수 있으므로, 이 파일이 '어댑터' 역할을 한다. 실제 주단가 엑셀을 받으면 columns 별칭 목록에 실제 헤더 이름만 추가하면 됨. 코드는 안 고쳐도 됨.",
+
+  "sheet": null,
+  "headerRow": 1,
+
+  "columns": {
+    "code":   ["상품코드", "코드", "품목코드", "제품코드", "SKU"],
+    "name":   ["상품명", "품목명", "제품명", "품명"],
+    "spec":   ["규격", "중량", "구성", "단위", "포장"],
+    "supply": ["공급가", "주단가", "단가", "공급단가", "매입가", "원가"],
+    "stock":  ["재고", "재고수량", "수량", "가능수량"],
+    "status": ["상태", "비고", "판매상태"]
+  },
+
+  "soldOutKeywords": ["품절", "마감", "없음", "중단", "단종"],
+  "lowStockThreshold": 10,
+
+  "pricing": {
+    "roundTo": 100,
+    "roundMode": "up",
+    "markets": {
+      "smartstore": { "label": "스마트스토어", "feeRate": 0.056, "marginRate": 0.15, "shipping": 0 },
+      "coupang":    { "label": "쿠팡",         "feeRate": 0.108, "marginRate": 0.15, "shipping": 0 }
+    }
+  }
+}
