@@ -1,5 +1,104 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { inflateSync } from "node:zlib";
+
+const originalHeroUrl = new URL(
+  "../public/nature-seomgim/hero-pc.png",
+  import.meta.url,
+);
+const peachHeroUrl = new URL(
+  "../public/nature-seomgim/hero-peach-pc.png",
+  import.meta.url,
+);
+
+async function decodePng(url) {
+  const png = await readFile(url);
+  const idatChunks = [];
+  let width;
+  let height;
+  let channels;
+
+  for (let offset = 8; offset < png.length; ) {
+    const length = png.readUInt32BE(offset);
+    const type = png.toString("ascii", offset + 4, offset + 8);
+    const data = png.subarray(offset + 8, offset + 8 + length);
+
+    if (type === "IHDR") {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      assert.equal(data[8], 8, "hero PNG must use 8-bit color");
+      assert.ok(
+        data[9] === 2 || data[9] === 6,
+        "hero PNG must use RGB or RGBA color",
+      );
+      channels = data[9] === 2 ? 3 : 4;
+    } else if (type === "IDAT") {
+      idatChunks.push(data);
+    } else if (type === "IEND") {
+      break;
+    }
+
+    offset += length + 12;
+  }
+
+  const filtered = inflateSync(Buffer.concat(idatChunks));
+  const stride = width * channels;
+  const pixels = Buffer.alloc(stride * height);
+
+  const paeth = (left, above, upperLeft) => {
+    const prediction = left + above - upperLeft;
+    const leftDistance = Math.abs(prediction - left);
+    const aboveDistance = Math.abs(prediction - above);
+    const upperLeftDistance = Math.abs(prediction - upperLeft);
+    if (leftDistance <= aboveDistance && leftDistance <= upperLeftDistance) {
+      return left;
+    }
+    return aboveDistance <= upperLeftDistance ? above : upperLeft;
+  };
+
+  for (let y = 0; y < height; y += 1) {
+    const filter = filtered[y * (stride + 1)];
+    const sourceOffset = y * (stride + 1) + 1;
+    const targetOffset = y * stride;
+
+    for (let x = 0; x < stride; x += 1) {
+      const raw = filtered[sourceOffset + x];
+      const left = x >= channels ? pixels[targetOffset + x - channels] : 0;
+      const above = y > 0 ? pixels[targetOffset + x - stride] : 0;
+      const upperLeft =
+        y > 0 && x >= channels
+          ? pixels[targetOffset + x - stride - channels]
+          : 0;
+      const reconstructed =
+        filter === 0
+          ? raw
+          : filter === 1
+            ? raw + left
+            : filter === 2
+              ? raw + above
+              : filter === 3
+                ? raw + Math.floor((left + above) / 2)
+                : raw + paeth(left, above, upperLeft);
+      pixels[targetOffset + x] = reconstructed & 0xff;
+    }
+  }
+
+  return { width, height, channels, pixels };
+}
+
+function cropPixels(image, region) {
+  const rowBytes = region.width * image.channels;
+  const result = Buffer.alloc(rowBytes * region.height);
+
+  for (let y = 0; y < region.height; y += 1) {
+    const sourceOffset =
+      ((region.top + y) * image.width + region.left) * image.channels;
+    image.pixels.copy(result, y * rowBytes, sourceOffset, sourceOffset + rowBytes);
+  }
+
+  return result;
+}
 
 async function renderPreview() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -67,6 +166,32 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="brand-story"/);
   assert.match(html, /data-cafe24-slot="trust-guide"/);
   assert.match(html, /data-cafe24-slot="footer"/);
+});
+
+test("keeps the peach hero copy and surrounding artwork unchanged", async () => {
+  const [original, peach] = await Promise.all([
+    decodePng(originalHeroUrl),
+    decodePng(peachHeroUrl),
+  ]);
+
+  assert.deepEqual([peach.width, peach.height], [original.width, original.height]);
+  assert.equal(peach.channels, original.channels);
+
+  const unchangedRegions = [
+    { left: 0, top: 0, width: 700, height: 400 },
+    { left: 1400, top: 0, width: 520, height: 400 },
+  ];
+
+  for (const region of unchangedRegions) {
+    const originalPixels = cropPixels(original, region);
+    const peachPixels = cropPixels(peach, region);
+    assert.deepEqual(peachPixels, originalPixels);
+  }
+
+  const fruitRegion = { left: 760, top: 60, width: 600, height: 340 };
+  const originalFruitPixels = cropPixels(original, fruitRegion);
+  const peachFruitPixels = cropPixels(peach, fruitRegion);
+  assert.notDeepEqual(peachFruitPixels, originalFruitPixels);
 });
 
 export { renderPreview };
