@@ -94,8 +94,8 @@ export function HeroAccountPanel() {
             srcSet="/nature-seomgim/hero-mobile.png"
           />
           <img
-            src="/nature-seomgim/hero-gift-box-pc.png"
-            alt="오늘의 제철 과일, 산지에서 가장 맛있는 순간"
+            src="/nature-seomgim/hero-premium-editorial-pc.png"
+            alt="산지의 정직함을 가장 품격 있게 전하는 자연섬김 선물세트"
           />
         </picture>
       </div>

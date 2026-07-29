@@ -62,10 +62,10 @@ export function SiteHeader() {
       </div>
 
       <div className={styles.headerMain}>
-        <a className={styles.logo} href="#top" aria-label="오늘도자연섬김 홈">
+        <a className={styles.logo} href="#top" aria-label="자연섬김 홈">
           <img
-            src="/nature-seomgim/logo-transparent.png"
-            alt="오늘도자연섬김"
+            src="/nature-seomgim/logo-nature-seomgim.png"
+            alt="자연섬김"
           />
         </a>
 

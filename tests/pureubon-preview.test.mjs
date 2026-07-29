@@ -7,8 +7,8 @@ const originalHeroUrl = new URL(
   "../public/nature-seomgim/hero-pc.png",
   import.meta.url,
 );
-const giftBoxHeroUrl = new URL(
-  "../public/nature-seomgim/hero-gift-box-pc.png",
+const premiumHeroUrl = new URL(
+  "../public/nature-seomgim/hero-premium-editorial-pc.png",
   import.meta.url,
 );
 
@@ -127,8 +127,9 @@ test("renders the nature-seomgim preview shell", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>자연섬김 푸르본 \| 산지직송 농산물<\/title>/);
-  assert.match(html, /오늘도자연섬김/);
-  assert.match(html, /\/nature-seomgim\/logo-transparent\.png/);
+  assert.match(html, /자연섬김 홈/);
+  assert.match(html, /\/nature-seomgim\/logo-nature-seomgim\.png/);
+  assert.doesNotMatch(html, /오늘도자연섬김/);
   assert.match(html, /상품을 검색해 보세요/);
   assert.match(html, /전체상품/);
   assert.match(html, /마이페이지/);
@@ -143,7 +144,8 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="hero-account-panel"/);
   assert.match(html, /자연섬김과 함께 신선한 장보기를 시작하세요/);
   assert.equal((html.match(/data-member-shortcut=/g) ?? []).length, 6);
-  assert.match(html, /\/nature-seomgim\/hero-gift-box-pc\.png/);
+  assert.match(html, /\/nature-seomgim\/hero-premium-editorial-pc\.png/);
+  assert.doesNotMatch(html, /\/nature-seomgim\/hero-gift-box-pc\.png/);
   assert.doesNotMatch(html, /\/nature-seomgim\/hero-peach-pc\.png/);
   assert.doesNotMatch(html, /\/nature-seomgim\/hero-pc\.png/);
   assert.doesNotMatch(html, /수산물|축산물|가공식품/);
@@ -169,30 +171,22 @@ test("renders the nature-seomgim preview shell", async () => {
   assert.match(html, /data-cafe24-slot="footer"/);
 });
 
-test("keeps the gift-box hero dimensions and copy artwork unchanged", async () => {
-  const [original, giftBox] = await Promise.all([
+test("uses the premium editorial hero artwork", async () => {
+  const [original, premiumHero] = await Promise.all([
     decodePng(originalHeroUrl),
-    decodePng(giftBoxHeroUrl),
+    decodePng(premiumHeroUrl),
   ]);
 
-  assert.deepEqual(
-    [giftBox.width, giftBox.height],
-    [original.width, original.height],
+  assert.deepEqual([premiumHero.width, premiumHero.height], [1695, 600]);
+  assert.ok(
+    premiumHero.channels === 3 || premiumHero.channels === 4,
+    "premium hero must use RGB or RGBA color",
   );
-  assert.equal(giftBox.channels, original.channels);
 
-  const unchangedRegions = [{ left: 0, top: 0, width: 700, height: 400 }];
-
-  for (const region of unchangedRegions) {
-    const originalPixels = cropPixels(original, region);
-    const giftBoxPixels = cropPixels(giftBox, region);
-    assert.deepEqual(giftBoxPixels, originalPixels);
-  }
-
-  const fruitRegion = { left: 760, top: 60, width: 600, height: 340 };
+  const fruitRegion = { left: 760, top: 80, width: 620, height: 300 };
   const originalFruitPixels = cropPixels(original, fruitRegion);
-  const giftBoxFruitPixels = cropPixels(giftBox, fruitRegion);
-  assert.notDeepEqual(giftBoxFruitPixels, originalFruitPixels);
+  const premiumFruitPixels = cropPixels(premiumHero, fruitRegion);
+  assert.notDeepEqual(premiumFruitPixels, originalFruitPixels);
 });
 
 export { renderPreview };
