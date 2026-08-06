@@ -5,6 +5,21 @@ import handler from "vinext/server/app-router-entry";
 interface Env {
   ASSETS: Fetcher;
   DB: D1Database;
+  NAVER_CLIENT_ID?: string;
+  NAVER_CLIENT_SECRET?: string;
+  NAVER_ORIGIN_AREA_CODE?: string;
+  NAVER_AS_PHONE?: string;
+  NAVER_AS_GUIDE?: string;
+  OPENAI_API_KEY?: string;
+  COUPANG_ACCESS_KEY?: string;
+  COUPANG_SECRET_KEY?: string;
+  CAFE24_MALL_ID?: string;
+  CAFE24_CLIENT_ID?: string;
+  CAFE24_CLIENT_SECRET?: string;
+  /** 상품 이미지 보관용 R2 버킷. 채널 엑셀에 넣을 공개 URL을 만들기 위해 필요하다. */
+  MEDIA?: R2Bucket;
+  /** 이미지 공개 주소의 기준 도메인. 비우면 요청이 들어온 도메인을 그대로 쓴다. */
+  MEDIA_PUBLIC_BASE?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
